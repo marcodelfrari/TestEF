@@ -1,18 +1,21 @@
+using System.Linq;
 using TestEF.Models;
 
 namespace TestEF.Repositories
 {
 	public class BlogRepository : IBlogRepository
 	{ 
-		public Blog GetBlog(int id)
+		public void UpdateTitle(int id, string title)
 		{ 
 			using (MyDbContext dbContext = new MyDbContext())
 			{
-				return dbContext.Blogs.Find(id);
+				Blog blog = dbContext.Blogs.Find(id);
+				blog.Title = title;
+				dbContext.SaveChanges();
 			}
 		}
 
-		public void Save(Blog blog)
+		public void AddBlog(Blog blog)
 		{
 			using (MyDbContext dbContext = new MyDbContext())
 			{

@@ -24,6 +24,11 @@ namespace TestEF
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{ 
 			base.OnModelCreating(modelBuilder);
+			
+			modelBuilder.Entity<Blog>()
+				.HasDiscriminator<bool>("IsCustom")
+				.HasValue<Blog>(false)
+				.HasValue<BlogCustom>(true);
 		}
 	}
 }

@@ -4,7 +4,7 @@ namespace TestEF.Repositories
 {
 	public interface IBlogRepository
 	{
-		Blog GetBlog(int id);
-		void Save(Blog blog);
+		void UpdateTitle(int id, string title);
+		void AddBlog(Blog blog);
 	}
 }

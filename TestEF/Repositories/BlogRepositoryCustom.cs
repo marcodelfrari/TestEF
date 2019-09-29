@@ -1,15 +1,18 @@
+using System.Linq;
 using TestEF.Models;
 
 namespace TestEF.Repositories
 {
-	public class BlogRepositoryCustom : BlogRepository
+	public class BlogRepositoryCustom : BlogRepository, IBlogCustomRepository
 	{
-		public Blog GetBlog(int id)
-		{ 
+		public void UpdateCustomField(int blogId, string val)
+		{
 			using (MyDbContextCustom dbContext = new MyDbContextCustom())
 			{
-				return dbContext.Blogs.Find(id);
-			} 
+				var blogCustom = dbContext.Blogs.Find(blogId);
+				blogCustom.CustomField = val;
+				dbContext.SaveChanges();
+			}
 		}
 	}
 }

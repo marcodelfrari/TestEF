@@ -6,8 +6,7 @@ namespace TestEF.Models
 {
 	[Table("Blog")]
 	public class BlogCustom : Blog
-	{ 
-		[Required]
-		public DateTime DateTimeAdd { get; set; }
+	{  
+		public String CustomField { get; set; }
 	}
 }

@@ -16,21 +16,27 @@ namespace TestEF
  
 			//builder.RegisterType<BlogRepository>().As<IBlogRepository>();
 			builder.RegisterType<BlogRepositoryCustom>().As<IBlogRepository>();
+			builder.RegisterType<BlogRepositoryCustom>().As<IBlogCustomRepository>();
 			Container = builder.Build(); 
 			
-			var repo = Container.Resolve<IBlogRepository>();
+			var repoStandard = Container.Resolve<IBlogRepository>();
+			repoStandard.UpdateTitle(1, DateTime.Now.ToString());
+			
+			
+			var repoCustom = Container.Resolve<IBlogCustomRepository>();
+			repoCustom.UpdateTitle(1, DateTime.Now.ToString());
 			 
-			Blog blog = repo.GetBlog(1);
+			repoCustom.UpdateCustomField(1, DateTime.Now.ToString());
+//			
+//			BlogCustom newBlog = new BlogCustom();
+//			newBlog.BlogId = new Random().Next(0, 100000);
+//			newBlog.CustomField = DateTime.Now.ToString();
+//			newBlog.Title = "test";
+//			newBlog.SubTitle = "test"; 
+//			
+//			repoStandard.AddBlog(newBlog);
 			
-			BlogCustom newBlog = new BlogCustom();
-			newBlog.BlogId = new Random().Next(0, 100000);
-			newBlog.DateTimeAdd = DateTime.Now;
-			newBlog.Title = "test";
-			newBlog.SubTitle = "test"; 
-			
-			repo.Save(newBlog);
-			
-			Debug.WriteLine(blog.GetType());
+			//Debug.WriteLine(newBlog.GetType());
 		}
 
 		static void Main2(string[] args)
