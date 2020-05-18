@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using Autofac;
 using TestEF.Models;
 using TestEF.Repositories;
@@ -12,63 +13,47 @@ namespace TestEF
 		
 		static void Main(string[] args)
 		{
-			var builder = new ContainerBuilder();
+
+			string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string db = Path.GetDirectoryName(path) + "//TestDatabase.db";
+			File.Delete(db);
+			
+			ContainerBuilder builder = new ContainerBuilder();
  
-			//builder.RegisterType<BlogRepository>().As<IBlogRepository>();
-			builder.RegisterType<BlogRepositoryCustom>().As<IBlogRepository>();
-			builder.RegisterType<BlogRepositoryCustom>().As<IBlogCustomRepository>();
-			Container = builder.Build(); 
-			
-			var repoStandard = Container.Resolve<IBlogRepository>();
-			repoStandard.UpdateTitle(1, DateTime.Now.ToString());
-			
-			
-			var repoCustom = Container.Resolve<IBlogCustomRepository>();
-			repoCustom.UpdateTitle(1, DateTime.Now.ToString());
+			builder.RegisterType<BlogRepository>().As<IBlogRepository>();
+			Container = builder.Build();
 			 
-			repoCustom.UpdateCustomField(1, DateTime.Now.ToString());
-//			
-//			BlogCustom newBlog = new BlogCustom();
-//			newBlog.BlogId = new Random().Next(0, 100000);
-//			newBlog.CustomField = DateTime.Now.ToString();
-//			newBlog.Title = "test";
-//			newBlog.SubTitle = "test"; 
-//			
-//			repoStandard.AddBlog(newBlog);
+			InitDB(); 
 			
-			//Debug.WriteLine(newBlog.GetType());
+			UpdateTitle();
+
+			LogTitle();
 		}
 
-		static void Main2(string[] args)
+		private static void LogTitle()
 		{
-//			string dbName = "TestDatabase.db";
-//			if (File.Exists(dbName))
-//			{
-//				File.Delete(dbName);
-//			}
-//			
-//			using (var dbContext = new MyDbContextCustom())
-//			{
-//				//Ensure database is created
-//				dbContext.Database.EnsureCreated();
-//				if (!dbContext.BlogCustoms.Any())
-//				{
-//					dbContext.BlogCustoms.AddRange(new BlogCustom[]
-//					{
-//						new BlogCustom{ BlogId=1, Title="Blog 1", SubTitle="Blog 1 subtitle" },
-//						new BlogCustom{ BlogId=2, Title="Blog 2", SubTitle="Blog 2 subtitle" },
-//						new BlogCustom{ BlogId=3, Title="Blog 3", SubTitle="Blog 3 subtitle" }
-//					});
-//					dbContext.SaveChanges();
-//				}
-//
-//
-//				foreach (var blog in dbContext.BlogCustoms)
-//				{
-//					Console.WriteLine($"BlogID={blog.BlogId}\tTitle={blog.Title}\t{blog.SubTitle}");
-//				}
-//			}
-//			Console.ReadLine();
+			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
+			Blog blog = repoStandard.GetBlog(1);
+			Debug.WriteLine($"Title: {blog.Title}");
+		}
+
+		private static void UpdateTitle()
+		{
+			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
+			repoStandard.SetTitle(1, DateTime.Now.ToString());
+		} 
+		
+		/// <summary>
+		/// Add Blog with ID = 1 if not exists
+		/// </summary>
+		private static void InitDB()
+		{
+			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
+		 
+			Blog newBlog = new Blog();
+			newBlog.BlogId = 1;
+			newBlog.Title = DateTime.Now.ToString();
+			repoStandard.AddBlog(newBlog);
 		}
 	}
 }

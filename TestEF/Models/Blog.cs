@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,12 +18,9 @@ namespace TestEF.Models
 		[Required]
 		[MaxLength(128)]
 		public string Title { get; set; }
-
-
-		[Required]
-		[MaxLength(256)]
-		public string SubTitle { get; set; }
-
-
+  
+		
+		public DateTime? LastUpdate { get; set; }
+		
 	}
 }

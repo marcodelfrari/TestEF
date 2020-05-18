@@ -6,7 +6,7 @@ namespace TestEF
 {
 	public class MyDbContextCustom : DbContext 
 	{
-		public DbSet<BlogCustom> Blogs { get; set; } 
+		public  DbSet<BlogCustom> Blogs { get; set; } 
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

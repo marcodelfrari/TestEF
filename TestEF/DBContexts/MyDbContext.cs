@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using TestEF.Models;
@@ -6,7 +7,7 @@ namespace TestEF
 {
 	public class MyDbContext : DbContext 
 	{
-		public  DbSet<Blog> Blogs { get; set; }
+		public  virtual DbSet<Blog> Blogs { get; set; }
 
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -15,8 +16,7 @@ namespace TestEF
 			{
 				options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
 			});
-
-
+ 
 			base.OnConfiguring(optionsBuilder);
 		}
 
@@ -25,10 +25,14 @@ namespace TestEF
 		{ 
 			base.OnModelCreating(modelBuilder);
 			
-			modelBuilder.Entity<Blog>()
-				.HasDiscriminator<bool>("IsCustom")
-				.HasValue<Blog>(false)
-				.HasValue<BlogCustom>(true);
+			/*modelBuilder.Entity<BlogCustom>(b =>
+			{
+				b.ToTable("Blog");
+			});
+			
+			
+			modelBuilder.Entity<BlogCustom>().HasBaseType(typeof(Blog));
+			*/
 		}
 	}
 }

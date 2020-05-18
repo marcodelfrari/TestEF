@@ -3,7 +3,7 @@ using TestEF.Models;
 
 namespace TestEF.Repositories
 {
-	public class BlogRepositoryCustom : BlogRepository, IBlogCustomRepository
+	public class BlogRepositoryCustom : BlogRepository
 	{
 		public void UpdateCustomField(int blogId, string val)
 		{
