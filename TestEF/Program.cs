@@ -12,14 +12,8 @@ namespace TestEF
 		public static IContainer Container { get; set; }
 		
 		static void Main(string[] args)
-		{
-
-			string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
-			string db = Path.GetDirectoryName(path) + "//TestDatabase.db";
-			File.Delete(db);
-			
+		{ 
 			ContainerBuilder builder = new ContainerBuilder();
- 
 			builder.RegisterType<BlogRepository>().As<IBlogRepository>();
 			Container = builder.Build();
 			 
@@ -30,6 +24,7 @@ namespace TestEF
 			LogTitle();
 		}
 
+		
 		private static void LogTitle()
 		{
 			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
@@ -48,6 +43,8 @@ namespace TestEF
 		/// </summary>
 		private static void InitDB()
 		{
+			DeleteDBFile();
+			
 			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
 		 
 			Blog newBlog = new Blog();
@@ -55,5 +52,13 @@ namespace TestEF
 			newBlog.Title = DateTime.Now.ToString();
 			repoStandard.AddBlog(newBlog);
 		}
+		
+		private static void DeleteDBFile()
+		{
+			string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string db = Path.Combine(Path.GetDirectoryName(path), "TestDatabase.db");
+			File.Delete(db);
+		}
+
 	}
 }
