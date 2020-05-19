@@ -24,7 +24,7 @@ namespace TestEF
 			
 			UpdateTitle();
 
-			ShowBlogDataCustom();
+			ShowBlogData();
 		}
 
 		private static void UpdateCustomField()
@@ -52,7 +52,9 @@ namespace TestEF
 		private static void UpdateTitle()
 		{
 			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
-			repoStandard.SetTitle(1, DateTime.Now.ToString());
+			Blog blog = repoStandard.GetBlog(1);
+			blog.Title = DateTime.Now.ToString();
+			repoStandard.Save(blog);
 		} 
 		
 		/// <summary>
@@ -70,7 +72,7 @@ namespace TestEF
 			// 3- Add sample Blog record
 			Blog newBlog = new Blog();
 			newBlog.BlogId = 1;
-			newBlog.Title = DateTime.Now.ToString();
+			newBlog.Title = "Title";
 			repo.AddBlog(newBlog);
 		}
 		

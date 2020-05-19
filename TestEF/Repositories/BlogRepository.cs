@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using TestEF.Models;
 
 namespace TestEF.Repositories
@@ -29,6 +30,15 @@ namespace TestEF.Repositories
 			using (MyDbContext dbContext = new MyDbContext())
 			{
 				dbContext.Database.EnsureCreated();
+			}
+		}
+
+		public void Save(Blog blog)
+		{
+			using (MyDbContext dbContext = new MyDbContext())
+			{
+				dbContext.Attach(blog);
+				dbContext.Entry(blog).State = EntityState.Modified;
 			}
 		}
 

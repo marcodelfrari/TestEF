@@ -9,5 +9,7 @@ namespace TestEF.Repositories
 		void AddBlog(Blog blog);
 		Blog GetBlog(int id);
 		public void InitDb();
+		void Save(Blog blog);
+		
 	}
 }
