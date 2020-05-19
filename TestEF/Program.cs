@@ -14,22 +14,39 @@ namespace TestEF
 		static void Main(string[] args)
 		{ 
 			ContainerBuilder builder = new ContainerBuilder();
-			builder.RegisterType<BlogRepository>().As<IBlogRepository>();
+			builder.RegisterType<BlogRepositoryCustom>().As<IBlogRepository>();
+			builder.RegisterType<BlogRepositoryCustom>().As<IBlogCustomRepository>();
 			Container = builder.Build();
 			 
 			InitDB(); 
+			 
+			UpdateCustomField();
 			
 			UpdateTitle();
 
-			LogTitle();
+			ShowBlogDataCustom();
 		}
 
-		
-		private static void LogTitle()
+		private static void UpdateCustomField()
+		{
+			IBlogCustomRepository repoStandard = Container.Resolve<IBlogCustomRepository>();
+			repoStandard.SetCustomField(1, $"Custom {DateTime.Now}");
+		}
+
+
+		private static void ShowBlogData()
 		{
 			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
 			Blog blog = repoStandard.GetBlog(1);
 			Debug.WriteLine($"Title: {blog.Title}");
+		}
+		
+		private static void ShowBlogDataCustom()
+		{
+			IBlogCustomRepository repoStandard = Container.Resolve<IBlogCustomRepository>();
+			BlogCustom blog = repoStandard.GetBlog(1) as BlogCustom;
+			Debug.WriteLine($"Title: {blog?.Title}");
+			Debug.WriteLine($"Custom: {blog?.CustomField}");
 		}
 
 		private static void UpdateTitle()
@@ -43,14 +60,18 @@ namespace TestEF
 		/// </summary>
 		private static void InitDB()
 		{
+			// 1- remove existing DB
 			DeleteDBFile();
 			
-			IBlogRepository repoStandard = Container.Resolve<IBlogRepository>();
-		 
+			// 2- EnsureCreated
+			IBlogRepository repo = Container.Resolve<IBlogRepository>();
+			repo.InitDb();
+			
+			// 3- Add sample Blog record
 			Blog newBlog = new Blog();
 			newBlog.BlogId = 1;
 			newBlog.Title = DateTime.Now.ToString();
-			repoStandard.AddBlog(newBlog);
+			repo.AddBlog(newBlog);
 		}
 		
 		private static void DeleteDBFile()

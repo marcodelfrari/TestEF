@@ -7,8 +7,8 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="4.9.2" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
     </ItemGroup>
 
     <ItemGroup>
@@ -16,12 +16,6 @@
       <Content Include="TestDatabase.db">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Repositories\IBlogCustomRepository.cs" />
-      <Compile Remove="DBContexts\MyDbContextCustom.cs" />
-      <Compile Remove="Repositories\BlogRepositoryCustom.cs" />
     </ItemGroup>
 
 </Project>

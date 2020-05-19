@@ -23,12 +23,19 @@ namespace TestEF.Repositories
 				return  dbContext.Blogs.FirstOrDefault(x => x.BlogId == id);
 			}
 		}
+		
+		public virtual void InitDb()
+		{
+			using (MyDbContext dbContext = new MyDbContext())
+			{
+				dbContext.Database.EnsureCreated();
+			}
+		}
 
 		public void AddBlog(Blog blog)
 		{
 			using (MyDbContext dbContext = new MyDbContext())
 			{
-				dbContext.Database.EnsureCreated();
 				dbContext.Blogs.Add(blog);
 				dbContext.SaveChanges();
 			}

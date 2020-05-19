@@ -4,6 +4,6 @@ namespace TestEF.Repositories
 {
 	public interface IBlogCustomRepository : IBlogRepository
 	{
-		void UpdateCustomField(int blogId, string val);
+		void SetCustomField(int blogId, string val);
 	}
 }

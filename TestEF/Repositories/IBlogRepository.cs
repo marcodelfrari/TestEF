@@ -8,5 +8,6 @@ namespace TestEF.Repositories
 		void SetTitle(int id, string title); 
 		void AddBlog(Blog blog);
 		Blog GetBlog(int id);
+		public void InitDb();
 	}
 }
